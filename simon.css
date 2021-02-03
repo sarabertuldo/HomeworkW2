@@ -1,0 +1,86 @@
+.container {
+  width: 600px;
+  height: 600px;
+  margin: auto;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  position: relative;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.button {
+  width: 290px;
+  height: 290px;
+  border-color: black;
+  border-style: solid;
+  float: left;
+}
+
+#footer {
+  text-align: center;
+}
+
+#footer button {
+  padding: 14px 7px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  cursor: pointer;
+  width: 175px;
+  background-color: black;
+}
+
+#inner-circle {
+  font-size: 22px;
+  position: absolute;
+  top: 200px;
+  left: 200px;
+  line-height: 75px;
+  z-index: 1000;
+  border-radius: 50%;
+  background-color: black;
+  width: 200px;
+  height: 180px;
+  padding-top: 20px;
+}
+
+#blue {
+  background-color: rgb(34, 185, 255);
+  opacity: 65%;
+}
+
+#green {
+  background-color: rgb(32, 185, 32);
+  opacity: 65%;
+}
+
+#red {
+  background-color: red;
+  opacity: 65%;
+}
+
+#yellow {
+  background-color: yellow;
+  opacity: 65%;
+}
+
+#blue.active {
+  opacity: 100%;
+}
+
+#green.active {
+  opacity: 100%;
+}
+
+#red.active {
+  opacity: 100%;
+}
+
+#yellow.active {
+  opacity: 100%;
+}
+
+#count {
+  border: 1px solid white;
+  padding: 5px;
+}
