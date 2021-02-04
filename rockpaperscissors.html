@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Rock Paper Scissors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="rockpaperscissors.css"
+    />
+  </head>
+  <body>
+    <header>
+      <h1 class="text-center">Rock Paper Scissors</h1>
+      <h2 class="text-center heading game">Game <span id="game">1</span></h2>
+      <div class="text-center container content">
+        <div class="text-center flex33">Wins: <span id="win">0</span></div>
+        <div class="text-center flex33">Ties: <span id="tie">0</span></div>
+        <div class="text-center flex33">Losses: <span id="loss">0</span></div>
+      </div>
+    </header>
+    <main>
+      <div class="content selection text-center" id="computer">
+        The computer hasn't picked yet.
+      </div>
+      <div class="content selection text-center" id="user">
+        You haven't picked yet.
+      </div>
+      <div class="content selection text-center"></div>
+      <div class="buttonContainer container content">
+        <button class="choice rock flex33" value="rock">
+          <img
+            src="https://image-cdn.essentiallysports.com/wp-content/uploads/20200715175624/the-rock.jpg"
+            width="200px"
+            height="125px"
+            id="dwayne"
+          />Rock
+        </button>
+        <button class="choice paper flex33" value="paper">
+          <img
+            src="
+            https://static.wikia.nocookie.net/theoffice/images/7/7d/MichaelScottPaperCompany.jpg/revision/latest?cb=20091216005626"
+            width="200px"
+            height="125px"
+            id="michael"
+          />
+          Paper
+        </button>
+        <button class="choice scissors flex33" value="scissors">
+          <img
+            src="https://variety.com/wp-content/uploads/2015/12/edward-scissorhands.jpg"
+            width="200px"
+            height="125px"
+            id="edward"
+          />
+          Scissors
+        </button>
+      </div>
+    </main>
+    <script src="./rockpaperscissors.js"></script>
+  </body>
+</html>
