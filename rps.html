@@ -21,14 +21,14 @@
   <body class="text">
     <h1>Rock Paper Scissors</h1>
 
-    <div class="compMsg"></div>
-    <div class="playerMsg"></div>
+    <div id="compMsg"></div>
+    <div id="playerMsg"></div>
 
     <p>Choose one!</p>
 
-    <button id="rock" value="rock">Rock</button>
-    <button id="paper" value="paper">Paper</button>
-    <button id="scissors" value="scissors">Scissors</button>
+    <button class="rps" id="rock" value="rock">Rock</button>
+    <button class="rps" id="paper" value="paper">Paper</button>
+    <button class="rps" id="scissors" value="scissors">Scissors</button>
 
     <div class="outcomeMsg"></div>
 
@@ -53,41 +53,36 @@
           return (playerChoice = "scissors");
         });
 
+      let playerMsg = document.getElementById("playerMsg");
+      let compMsg = document.getElementById("compMsg");
+
       let win = 0;
       let lose = 0;
       let tie = 0;
 
       function playerChoice() {
-        if (playerChoice === "rock") {
+        if (playChoice === "rock") {
           return;
-          playerMsg.getElementByClassName.innerHTML("You chose rock");
-        } else if (playerChoice === "paper") {
-          return playerMsg.getElementByClassName.innerHTML("You chose paper");
-        } else if (playerChoice === "scissors") {
-          return playerMsg.getElementByClassName.innerHTML(
-            "You chose scissors"
-          );
+          playerMsg.innerHTML("You chose rock");
+        } else if (playChoice === "paper") {
+          return playerMsg.innerHTML("You chose paper");
+        } else if (playChoice === "scissors") {
+          return playerMsg.innerHTML("You chose scissors");
         }
       }
 
       function computerChoice() {
         let cpuChoice = Math.floor(Math.random() * 3);
         if (cpuChoice === 0) {
-          return compMsg.getElementsByClassName.innerHTML(
-            "Computer chose rock"
-          );
+          return compMsg.innerHTML("Computer chose rock");
         } else if (cpuChoice === 1) {
-          return compMsg.getElementsByClassName.innerHTML(
-            "Computer chose paper"
-          );
+          return compMsg.innerHTML("Computer chose paper");
         } else if (cpuChoice == 2) {
-          return compMsg.getElementsByClassName.innerHTML(
-            "computer chose scissors"
-          );
+          return compMsg.innerHTML("Computer chose scissors");
         }
       }
 
-      function outcome(playerChoice, computerChoice) {
+      function outcome(playChoice, cpuChoice) {
         if (playerChoice === "rock" || computerChoice === "paper") {
           return outcomeMsg.getElementsByClassName.innerHTML(
             "Paper covers rock. You lose!"
