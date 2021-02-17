@@ -48,10 +48,13 @@ for (let i = 0; i < buttons.length; i++)
     };
 })
 }
+e.currentTarget
+// 
+// let dwayne = document.getElementById("dwayne");
+// 
+// dwayne.addEventListener("click", function userChoice(choice); {
 
-//let dwayne = document.getElementById("dwayne");
-//
-//dwayne.addEventListener("click", function userChoice(choice); {
+
 //    if (userChoice === 1) {
 //        document.getElementById('user').innerText = 'You chose rock!';
 //    }
