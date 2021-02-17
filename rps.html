@@ -34,7 +34,7 @@
 
     <div class="playerScore">Player Score: <span id="win">0</span></div>
     <div class="compScore">Computer Score: <span id="lose">0</span></div>
-    <div class="ties">Ties: <span id="ties">0</span></div>
+    <div class="ties">Ties: <span id="tie">0</span></div>
 
     <script>
       let rock = document
@@ -52,6 +52,10 @@
         .addEventListener("click", (e) => {
           return (playerChoice = "scissors");
         });
+
+      let win = 0;
+      let lose = 0;
+      let tie = 0;
 
       function playerChoice() {
         if (playerChoice === "rock") {
@@ -88,29 +92,36 @@
           return outcomeMsg.getElementsByClassName.innerHTML(
             "Paper covers rock. You lose!"
           );
+          lose++;
         } else if (playerChoice === "rock" || computerChoice === "scissors") {
           return outcomeMsg.getElementsByClassName.innerHTML(
             "Rock smashes scissors. You win!"
           );
+          win++;
         } else if (playerChoice === "scissors" || computerChoice === "rock") {
           return outcomeMsg.getElementsByClassName.innerHTML(
             "Rock smashes scissors. You lose!"
           );
+          lose++;
         } else if (playerChoice === "scissors" || computerChoice === "paper") {
           return outcomeMsg.getElementsByClassName.innerHTML(
             "Scissors cut paper. You win!"
           );
+          win++;
         } else if (playerChoice === "paper" || computerChoice === "rock") {
           return outcomeMsg.getElementsByClassName.innerHTML(
             "Paper covers rock. You win!"
           );
+          win++;
         } else if (playerChoice === "paper" || computerChoice === "scissors") {
           return outcomeMsg.getElementsByClassName.innerHTML(
             "Scissors cut paper. You lose!"
           );
+          lose++;
         } else if (playerChoice === computerChoice) {
           return;
           outcomeMsg.getElementsByClassName.innerHTML("It's a tie!");
+          tie++;
         }
       }
     </script>
