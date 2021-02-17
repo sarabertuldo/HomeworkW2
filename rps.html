@@ -40,56 +40,79 @@
       let rock = document
         .getElementById("rock")
         .addEventListener("click", (e) => {
-          return playerChoice = "rock";
+          return (playerChoice = "rock");
         });
       let paper = document
         .getElementById("paper")
         .addEventListener("click", (e) => {
-          return playerChoice = "paper";
+          return (playerChoice = "paper");
         });
       let scissors = document
         .getElementById("scissors")
         .addEventListener("click", (e) => {
-          return playerChoice = "scissors";
+          return (playerChoice = "scissors");
         });
 
       function playerChoice() {
-        if (playerChoice === "rock")
-        return playerMsg.getElementByClassName.innerHTML("You chose rock")
-        else if (playerChoice === "paper")
-        return playerMsg.getElementByClassName.innerHTML("You chose paper")
-        else if (playerChoice === "scissors")
-        return playerMsg.getElementByClassName.innerHTML("You chose scissors")
+        if (playerChoice === "rock") {
+          return;
+          playerMsg.getElementByClassName.innerHTML("You chose rock");
+        } else if (playerChoice === "paper") {
+          return playerMsg.getElementByClassName.innerHTML("You chose paper");
+        } else if (playerChoice === "scissors") {
+          return playerMsg.getElementByClassName.innerHTML(
+            "You chose scissors"
+          );
+        }
       }
 
       function computerChoice() {
-          let cpuChoice = Math.floor(Math.random() * 3);
-        if (cpuChoice === 0) return compMsg.getElementsByClassName.innerHTML("Computer chose rock")
-        else if (cpuChoice === 1) return compMsg.getElementsByClassName.innerHTML("Computer chose paper")
-        else if (cpuChoice == 2) return compMsg.getElementsByClassName.innerHTML("computer chose scissors");
+        let cpuChoice = Math.floor(Math.random() * 3);
+        if (cpuChoice === 0) {
+          return compMsg.getElementsByClassName.innerHTML(
+            "Computer chose rock"
+          );
+        } else if (cpuChoice === 1) {
+          return compMsg.getElementsByClassName.innerHTML(
+            "Computer chose paper"
+          );
+        } else if (cpuChoice == 2) {
+          return compMsg.getElementsByClassName.innerHTML(
+            "computer chose scissors"
+          );
+        }
       }
 
       function outcome(playerChoice, computerChoice) {
         if (playerChoice === "rock" || computerChoice === "paper") {
-         return outcomeMsg.getElementsByClassName.innerHTML("Paper covers rock. You lose!");
+          return outcomeMsg.getElementsByClassName.innerHTML(
+            "Paper covers rock. You lose!"
+          );
+        } else if (playerChoice === "rock" || computerChoice === "scissors") {
+          return outcomeMsg.getElementsByClassName.innerHTML(
+            "Rock smashes scissors. You win!"
+          );
+        } else if (playerChoice === "scissors" || computerChoice === "rock") {
+          return outcomeMsg.getElementsByClassName.innerHTML(
+            "Rock smashes scissors. You lose!"
+          );
+        } else if (playerChoice === "scissors" || computerChoice === "paper") {
+          return outcomeMsg.getElementsByClassName.innerHTML(
+            "Scissors cut paper. You win!"
+          );
+        } else if (playerChoice === "paper" || computerChoice === "rock") {
+          return outcomeMsg.getElementsByClassName.innerHTML(
+            "Paper covers rock. You win!"
+          );
+        } else if (playerChoice === "paper" || computerChoice === "scissors") {
+          return outcomeMsg.getElementsByClassName.innerHTML(
+            "Scissors cut paper. You lose!"
+          );
+        } else if (playerChoice === computerChoice) {
+          return;
+          outcomeMsg.getElementsByClassName.innerHTML("It's a tie!");
         }
-        else if (playerChoice === "rock" || computerChoice === "scissors") {
-         return outcomeMsg.getElementsByClassName.innerHTML("Rock smashes scissors. You win!");
-        }
-         else if (playerChoice === "scissors" || computerChoice === "rock") {
-         return outcomeMsg.getElementsByClassName.innerHTML("Rock smashes scissors. You lose!");
-        }
-        else if (playerChoice === "scissors" || computerChoice === "paper") {
-         return outcomeMsg.getElementsByClassName.innerHTML("Scissors cut paper. You win!");
-        }
-         else if (playerChoice === "paper" || computerChoice === "rock") {
-         return outcomeMsg.getElementsByClassName.innerHTML("Paper covers rock. You win!");
-        }
-         else if (playerChoice === "paper" || computerChoice === "scissors") {
-         return outcomeMsg.getElementsByClassName.innerHTML("Scissors cut paper. You lose!");
-        } else (playerChoice === computerChoice) { return
-         outcomeMsg.getElementsByClassName.innerHTML("It's a tie!");}
-        }
+      }
     </script>
   </body>
 </html>
