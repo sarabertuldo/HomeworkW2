@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blackjack Homework</title>
+    <style>
+      .gameArea {
+        border: 5px solid black;
+        min-width: 500px;
+        min-height: 450px;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        float: left;
+        padding: 5px;
+        background: rgb(2, 0, 36);
+        background: linear-gradient(
+          90deg,
+          rgba(2, 0, 36, 1) 0%,
+          rgba(9, 98, 27, 1) 0%,
+          rgba(65, 138, 16, 1) 45%,
+          rgba(58, 190, 32, 1) 100%
+        );
+      }
+
+      .hidden {
+        display: none;
+      }
+      .card {
+        padding: 5px;
+        font-size: 15px;
+        width: 45px;
+        height: 75px;
+        border: 1px solid black;
+        border-radius: 5px;
+        margin: 5px;
+        background-color: aliceblue;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+      .hearts,
+      .diamonds {
+        color: red;
+      }
+      .diamonds {
+        background-image: url("https://upload.wikimedia.org/wikipedia/commons/d/db/SuitDiamonds.svg");
+      }
+      .hearts {
+        background-image: url("https://upload.wikimedia.org/wikipedia/commons/f/f0/SuitHearts.svg");
+      }
+      .clubs {
+        background-image: url("https://upload.wikimedia.org/wikipedia/commons/8/8a/SuitClubs.svg");
+      }
+      .spades {
+        background-image: url("https://upload.wikimedia.org/wikipedia/commons/5/5c/Naipe_espadas.png");
+      }
+      .spades,
+      .clubs {
+        color: black;
+      }
+
+      .flex {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .button {
+        margin: 10px;
+      }
+
+      .text-center {
+        text-align: center;
+        font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex gameArea">
+      <p class="text-center">Computer's Cards</p>
+      <div class="flex" id="comp"></div>
+      <p class="text-center">Player's Cards</p>
+      <div class="flex" id="player"></div>
+      <div class="text-center" id="outcome" class="hidden"></div>
+      <div class="button flex">
+        <button class="button" id="hit" value="hit">Hit Me</button>
+        <button class="button" id="stay" value="stay">Stay</button>
+        <button class="button" id="startGame" value="startGame">
+          New Game
+        </button>
+      </div>
+    </div>
+    <script>
+      const suits = ["clubs", "diamonds", "hearts", "spades"];
+      const faces = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"];
+
+      let hit = document.getElementById("hit");
+      let stay = document.getElementById("stay");
+      let startButton = document.getElementById("startGame");
+      let player = document.getElementById("player");
+      let comp = document.getElementById("comp");
+      let outcome = document.getElementById("outcome");
+
+      let decks = {
+        active: [],
+        discard: [],
+      };
+
+      let gameInfo = {
+        gameOver: true,
+        playerStay: false,
+        compStay: false,
+        playerHand: [],
+        compHand: [],
+        pVal: 0,
+        cVal: 0,
+      };
+
+      startButton.addEventListener("click", startGame);
+      stay.addEventListener("click", playerAction);
+      hit.addEventListener("click", playerAction);
+
+      // This function loops through each of the suits
+      // For each Suit, it loops through all options and builds a deck with a suit, value, and face key for easy reference later
+      function buildDeck() {
+        suits.forEach((s) => {
+          faces.forEach((f, idx) => {
+            let val;
+            if (f === "A") {
+              val = 11;
+            } else if (f >= 2 || f <= 10) {
+              val = f;
+            } else {
+              val = 10;
+            }
+
+            decks.active.push({ suit: s, value: val, face: f });
+          });
+        });
+      }
+
+      // Simple shuffling algorithm to randomize the deck
+      function shuffleDeck(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+      // Adds the top card to the required hand (player or computer)
+      // After dealing, if the deck is empty, the discard deck gets re-added and shuffled
+      // Afterwards, it renders the cards to the page
+      function drawCard(hand) {
+        hand.push(decks.active.pop());
+        if (decks.active.length === 0) {
+          decks.active = [...decks.discard];
+          shuffleDeck(decks.active);
+          decks.discard = [];
+        }
+        renderCards();
+      }
+
+      // Calculates the value of any given hand
+      // It checks for aces and if any are found AND the total is over 21 it subtracts 10 from the score
+      // It does this for all aces one at a time
+
+      // For example
+      // If you start with two aces, it sees you're over 21 so it treats one as 1 pt and recalculates your point total is then 12
+      // If dealt another ace, it sees your total as 33. It then treats the first ace as 1pt.
+      // Your total is now 22 so it treats another ace as 1. Your total then is 14 so it stops there.
+      function handValue(hand) {
+        let value = 0;
+        let numAces = 0;
+        hand.forEach((card) => {
+          if (card.face === "A") {
+            numAces++;
+          }
+          value += card.value;
+        });
+        while (value > 21 && numAces > 0) {
+          value -= 10;
+          numAces--;
+        }
+        return value;
+      }
+
+      // Gets current point totals and sees who is leading / if the game is over
+      // If either player are at 21, the requisite player wins
+      // If both players have stood, the winner is calculated by point total
+      // If either player is over 21, the game ends.
+      function checkWin() {
+        gameInfo.cVal = handValue(gameInfo.compHand);
+        gameInfo.pVal = handValue(gameInfo.playerHand);
+        if (gameInfo.compStay && gameInfo.playerStay) {
+          let winner =
+            gameInfo.cVal >= gameInfo.pVal ? "You lost!" : "You won!";
+          endGame(winner);
+        } else if (gameInfo.pVal < 21 && gameInfo.cVal < 21) {
+          return;
+        } else if (gameInfo.pVal === 21 && gameInfo.cVal !== 21) {
+          endGame("You won with Blackjack!");
+        } else if (gameInfo.cVal === 21) {
+          endGame("You lost, the computer got Blackjack!");
+        } else if (gameInfo.pVal > 21) {
+          endGame("You busted and lost!");
+        } else {
+          endGame("You won! The computer busted!");
+        }
+      }
+
+      // If the computers value is over 17, they stand and
+      // If they haven't stood, they draw a card
+      // Then the score is checked
+      // If the game isn't over BUT the player is standing, the function is run again for another computer card
+      // This cycle continues until either the computer busts or stands
+      function compDraw() {
+        if (gameInfo.cVal >= 17) {
+          gameInfo.compStay = true;
+        }
+        if (!gameInfo.compStay) {
+          drawCard(gameInfo.compHand);
+        }
+        checkWin();
+        if (gameInfo.playerStay && !gameInfo.gameOver) {
+          compDraw();
+        }
+      }
+
+      // When a player clicks hit or stand this function runs
+      // If the game is over or they already stood, it ignores the click
+      // If they clicked stand, it sets their stand status to true and checks to see if the game is over
+      // If they clicked hit, it gives them a card. if the game is not over, the computer checks to see if it needs to draw
+      function playerAction(e) {
+        if (gameInfo.gameOver || gameInfo.playerStay) {
+          return;
+        }
+        if (e.target.value == "stay") {
+          gameInfo.playerStay = true;
+        } else {
+          drawCard(gameInfo.playerHand);
+          checkWin();
+        }
+        if (!gameInfo.gameOver) {
+          compDraw();
+        }
+      }
+
+      // When the game ends, the win/loss message appears,
+      // the new game button is unhidden and the hit/stay buttons are re-hidden
+      // The player and computer hands are added to the discard and the game info is reset to its starting point
+      function endGame(msg) {
+        outcome.classList.remove("hidden");
+        startButton.classList.remove("hidden");
+        hit.classList.add("hidden");
+        stay.classList.add("hidden");
+        outcome.innerText = msg;
+        decks.discard = [
+          ...decks.discard,
+          ...gameInfo.playerHand,
+          ...gameInfo.compHand,
+        ];
+        gameInfo = {
+          gameOver: true,
+          playerStay: false,
+          compStay: false,
+          playerHand: [],
+          compHand: [],
+        };
+      }
+
+      // This adds the user and computers hands to the screen via a helper function
+
+      function renderCards() {
+        player.innerHTML = "";
+        comp.innerHTML = "";
+        gameInfo.playerHand.forEach((c) => {
+          player.append(createCardDiv(c));
+        });
+        gameInfo.compHand.forEach((c) => {
+          comp.append(createCardDiv(c));
+        });
+      }
+
+      // Creates a div with the needed info such as the suit, face, and needed classes
+      function createCardDiv(card) {
+        let div = document.createElement("div");
+        div.classList.add(card.suit);
+        div.classList.add("card");
+        div.innerText = card.face;
+        return div;
+      }
+
+      // On game start, the cards are wiped from the board
+      // The game info is reset
+      // The hit/stand buttons are unhidden
+      // The start game / message are unhidden
+      // Two cards each are then drawn for the player and the computer
+      function startGame() {
+        player.innerHTML = ``;
+        comp.innerHTML = ``;
+        gameInfo.gameOver = false;
+        outcome.classList.add("hidden");
+        startButton.classList.add("hidden");
+        hit.classList.remove("hidden");
+        stay.classList.remove("hidden");
+        drawCard(gameInfo.playerHand);
+        drawCard(gameInfo.compHand);
+        drawCard(gameInfo.playerHand);
+        drawCard(gameInfo.compHand);
+        checkWin();
+      }
+
+      // Starts the deck off with a new deck and then shuffles it
+      buildDeck();
+      shuffleDeck(decks.active);
+    </script>
+  </body>
+</html>
