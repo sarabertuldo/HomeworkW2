@@ -16,6 +16,10 @@
         background-color: green;
         color: white;
       }
+
+      .hidden {
+        display: none;
+      }
     </style>
   </head>
   <body class="text">
@@ -24,13 +28,13 @@
     <div id="compMsg"></div>
     <div id="playerMsg"></div>
 
-    <p>Choose one!</p>
+    <div class="start">Choose one!</div>
 
     <button class="rps" id="rock" value="rock">Rock</button>
     <button class="rps" id="paper" value="paper">Paper</button>
     <button class="rps" id="scissors" value="scissors">Scissors</button>
 
-    <div class="outcomeMsg"></div>
+    <div id="outcomeMsg"></div>
 
     <div class="playerScore">Player Score: <span id="win">0</span></div>
     <div class="compScore">Computer Score: <span id="lose">0</span></div>
@@ -40,85 +44,73 @@
       let rock = document
         .getElementById("rock")
         .addEventListener("click", (e) => {
-          return (playChoice = "rock");
+          return playerChoice("rock");
         });
 
       let paper = document
         .getElementById("paper")
         .addEventListener("click", (e) => {
-          return (playChoice = "paper");
+          return playerChoice("paper");
         });
       let scissors = document
         .getElementById("scissors")
         .addEventListener("click", (e) => {
-          return (playChoice = "scissors");
+          return playerChoice("scissors");
         });
 
       let playerMsg = document.getElementById("playerMsg");
       let compMsg = document.getElementById("compMsg");
+      let outcomeMsg = document.getElementById("outcomeMsg");
 
       let win = 0;
       let lose = 0;
       let tie = 0;
 
-      function playerChoice() {
+      function playerChoice(playChoice) {
         if (playChoice === "rock") {
-          return;
-          playerMsg.innerHTML("You chose rock");
+          playerMsg.innerHTML = "You chose rock";
         } else if (playChoice === "paper") {
-          return playerMsg.innerHTML("You chose paper");
+          playerMsg.innerHTML = "You chose paper";
         } else if (playChoice === "scissors") {
-          return playerMsg.innerHTML("You chose scissors");
+          playerMsg.innerHTML = "You chose scissors";
         }
+        let computer = computerChoice();
+        outcome(playChoice, computer);
       }
 
       function computerChoice() {
-        let cpuChoice = Math.floor(Math.random() * 3);
-        if (cpuChoice === 0) {
-          return compMsg.innerHTML("Computer chose rock");
-        } else if (cpuChoice === 1) {
-          return compMsg.innerHTML("Computer chose paper");
-        } else if (cpuChoice == 2) {
-          return compMsg.innerHTML("Computer chose scissors");
-        }
+        let options = ["rock", "paper", "scissors"];
+        let cpuChoice = options[Math.floor(Math.random() * 3)];
+        compMsg.innerHTML = `Computer chose ${cpuChoice}`;
+        return cpuChoice;
       }
 
       function outcome(playChoice, cpuChoice) {
-        if (playerChoice === "rock" || computerChoice === "paper") {
-          return outcomeMsg.getElementsByClassName.innerHTML(
-            "Paper covers rock. You lose!"
-          );
+        // let win;
+        // let lose;
+        if (playChoice === "rock" && cpuChoice === "paper") {
+          outcomeMsg.innerHTML = "Paper covers rock. You lose!";
           lose++;
-        } else if (playerChoice === "rock" || computerChoice === "scissors") {
-          return outcomeMsg.getElementsByClassName.innerHTML(
-            "Rock smashes scissors. You win!"
-          );
+        } else if (playChoice === "rock" && cpuChoice === "scissors") {
+          outcomeMsg.innerHTML = "Rock smashes scissors. You win!";
           win++;
-        } else if (playerChoice === "scissors" || computerChoice === "rock") {
-          return outcomeMsg.getElementsByClassName.innerHTML(
-            "Rock smashes scissors. You lose!"
-          );
+        } else if (playChoice === "scissors" && cpuChoice === "rock") {
+          outcomeMsg.innerHTML = "Rock smashes scissors. You lose!";
           lose++;
-        } else if (playerChoice === "scissors" || computerChoice === "paper") {
-          return outcomeMsg.getElementsByClassName.innerHTML(
-            "Scissors cut paper. You win!"
-          );
+        } else if (playChoice === "scissors" && cpuChoice === "paper") {
+          outcomeMsg.innerHTML = "Scissors cut paper. You win!";
           win++;
-        } else if (playerChoice === "paper" || computerChoice === "rock") {
-          return outcomeMsg.getElementsByClassName.innerHTML(
-            "Paper covers rock. You win!"
-          );
+        } else if (playChoice === "paper" && cpuChoice === "rock") {
+          outcomeMsg.innerHTML = "Paper covers rock. You win!";
           win++;
-        } else if (playerChoice === "paper" || computerChoice === "scissors") {
-          return outcomeMsg.getElementsByClassName.innerHTML(
-            "Scissors cut paper. You lose!"
-          );
+        } else if (playChoice === "paper" && cpuChoice === "scissors") {
+          outcomeMsg.innerHTML = "Scissors cut paper. You lose!";
           lose++;
-        } else if (playerChoice === computerChoice) {
-          return;
-          outcomeMsg.getElementsByClassName.innerHTML("It's a tie!");
+        } else if (playChoice === cpuChoice) {
+          outcomeMsg.innerHTML = "It's a tie!";
           tie++;
         }
+        // grab win values win++;
       }
     </script>
   </body>
