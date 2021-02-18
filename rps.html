@@ -86,8 +86,9 @@
       }
 
       function outcome(playChoice, cpuChoice) {
-        // let win;
-        // let lose;
+        // let win = document.getElementById("win");
+        // let lose = document.getElementById("lose");
+        // let tie = document.getElementById("tie");
         if (playChoice === "rock" && cpuChoice === "paper") {
           outcomeMsg.innerHTML = "Paper covers rock. You lose!";
           lose++;
@@ -110,7 +111,10 @@
           outcomeMsg.innerHTML = "It's a tie!";
           tie++;
         }
-        // grab win values win++;
+        // grab win values
+        document.getElementById("win").innerHTML = win;
+        document.getElementById("lose").innerHTML = lose;
+        document.getElementById("tie").innerHTML = tie;
       }
     </script>
   </body>
